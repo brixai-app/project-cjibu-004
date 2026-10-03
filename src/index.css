@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #121212;
+  --color-bg-rgb: 18, 18, 18;
+  --color-surface: #1E1E1E;
+  --color-surface-rgb: 30, 30, 30;
+  --color-surface-hover: #262626;
+  --color-surface-hover-rgb: 38, 38, 38;
+  --color-border: #2E2E2E;
+  --color-border-rgb: 46, 46, 46;
+  --color-text-primary: #F5F5F5;
+  --color-text-primary-rgb: 245, 245, 245;
+  --color-text-muted: #B7B7B7;
+  --color-text-muted-rgb: 183, 183, 183;
+  --color-accent: #0077FF;
+  --color-accent-rgb: 0, 119, 255;
+  --color-accent-hover: #0A5ED6;
+  --color-accent-hover-rgb: 10, 94, 214;
+  --color-accent-text: #000000;
+  --radius-theme: 14px;
+  --font-heading: 'Lora', sans-serif;
+  --font-body: 'JetBrains Mono', sans-serif;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    background-image: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(var(--color-accent-rgb), 0.06), transparent 60%);
+    background-attachment: fixed;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
