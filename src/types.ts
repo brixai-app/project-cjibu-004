@@ -1,52 +1,79 @@
-export type Metric = {
-  id: string;
-  label: string;
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  description?: string;
-};
-
-export type ChartPoint = {
-  label: string;
-  value: number;
-};
-
-export type ChartSeries = {
+export type Profile = {
   id: string;
   name: string;
-  color?: string;
-  points: ChartPoint[];
+  title: string;
+  location: string;
+  headline: string;
+  bio: string;
+  avatarUrl: string;
+  yearsExperience: number;
+  sectors: string[];
+  metrics: {
+    dealsAdvised: number;
+    capitalRaised: number;
+    avgDealSize: number;
+    geographies: string[];
+  };
 };
 
-export type CaseStudy = {
+export type About = {
   id: string;
-  title: string;
-  slug: string;
-  sector: string;
-  headline: string;
-  summary: string;
-  challenge: string;
-  approach: string;
-  outcome: string;
-  metrics: Metric[];
-  chartsData?: ChartSeries[];
-  thumbnailUrl: string;
-  heroImageUrl?: string;
-  servicesUsed: string[];
-  timeline: string;
-  location?: string;
+  mission: string;
+  philosophy: string;
+  narrative: string[];
+  highlightMetrics: Array<{
+    id: string;
+    label: string;
+    value: string;
+    descriptor: string;
+  }>;
+  timeline: Array<{
+    id: string;
+    year: string;
+    title: string;
+    description: string;
+  }>;
 };
+
+export type ServiceCategory = 'Advisory' | 'Capital' | 'Restructuring' | 'Strategic';
 
 export type Service = {
   id: string;
   name: string;
-  slug: string;
-  category: string;
-  tagline: string;
+  category: ServiceCategory;
+  summary: string;
   description: string;
   outcomes: string[];
-  spotlightMetric?: Metric;
+  tags: string[];
+  typicalMandateSize: string;
+  timelineRange: string;
+};
+
+export type CaseStudyMetric = {
+  id: string;
+  label: string;
+  value: string;
+  context: string;
+};
+
+export type CaseStudy = {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  clientType: string;
+  sector: string;
+  location: string;
+  imageUrls: string[];
+  mandate: string;
+  challenge: string;
+  approach: string[];
+  outcome: string;
+  metrics: CaseStudyMetric[];
+  servicesUsed: string[];
+  year: string;
+  dealSize: string;
+  isFeatured: boolean;
 };
 
 export type Testimonial = {
@@ -54,43 +81,41 @@ export type Testimonial = {
   name: string;
   role: string;
   company: string;
-  avatarUrl?: string;
   quote: string;
-  highlight?: string;
-  relationship: string;
+  rating: number;
+  sector: string;
+  relationship: 'Client' | 'Partner' | 'Peer';
+  avatarUrl: string;
+  highlightDealId?: string;
 };
 
-export type ContactFormState = {
+export type ContactFormValues = {
   name: string;
-  email: string;
   company: string;
-  role: string;
+  email: string;
+  phone?: string;
+  mandateType: string;
   mandateSize: string;
   timeline: string;
   message: string;
   consent: boolean;
 };
 
-export type ContactFormErrors = {
-  name?: string;
-  email?: string;
-  company?: string;
-  role?: string;
-  mandateSize?: string;
-  timeline?: string;
-  message?: string;
-  consent?: string;
+export type ContactFormSubmission = ContactFormValues & {
+  id: string;
+  submittedAt: string;
+  source: 'Website' | 'Referral' | 'Conference' | 'Other';
 };
 
-export type AppTypes = {
-  Metric: Metric;
-  CaseStudy: CaseStudy;
-  Service: Service;
-  Testimonial: Testimonial;
-  ContactFormState: ContactFormState;
-  ContactFormErrors: ContactFormErrors;
-};
+export type SortKey = 'year' | 'dealSize' | 'client' | 'sector';
 
-const types: AppTypes = {} as AppTypes;
+export type FilterKey =
+  | 'All'
+  | 'M&A'
+  | 'Capital'
+  | 'Restructuring'
+  | 'PrivateEquity'
+  | 'FamilyOffice';
 
+const types = {};
 export default types;

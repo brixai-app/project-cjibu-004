@@ -1,150 +1,116 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Filter, ChevronDown } from 'lucide-react';
+import AppLayout from '@/components/AppLayout';
 import { caseStudies } from '@/data/mockData';
-import { LayoutShell } from '@/components/LayoutShell';
-import { CaseStudyModal } from '@/components/CaseStudyModal';
-import { CaseStudy } from '@/types';
-import { cn } from '@/lib/utils';
 
-type SortKey = 'recent' | 'alpha';
+export type CaseStudiesPageProps = {
+  className?: string;
+};
 
-export function CaseStudies() {
-  const [activeSector, setActiveSector] = useState<string>('All');
-  const [sortKey, setSortKey] = useState<SortKey>('recent');
-  const [selected, setSelected] = useState<CaseStudy | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-  const sectors = useMemo(
-    () => ['All', ...Array.from(new Set((caseStudies ?? []).map((c) => c?.sector ?? '')))].filter(Boolean),
-    []
-  );
-
-  const sortedFiltered = useMemo(() => {
-    const items = (caseStudies ?? []).filter((c) =>
-      activeSector === 'All' ? true : (c?.sector ?? '') === activeSector
-    );
-    if (sortKey === 'alpha') {
-      return [...items].sort((a, b) => (a?.title ?? '').localeCompare(b?.title ?? ''));
-    }
-    return [...items].sort((a, b) => (b?.timeline ?? '').localeCompare(a?.timeline ?? ''));
-  }, [activeSector, sortKey]);
-
-  const handleCardClick = (item: CaseStudy | null) => {
-    if (!item) return;
-    setSelected(item);
-    setModalOpen(true);
-  };
-
-  const handleModalChange = (open: boolean) => {
-    setModalOpen(open);
-    if (!open) setSelected(null);
-  };
+export function CaseStudiesPage({ className = '' }: CaseStudiesPageProps) {
+  const featured = caseStudies?.filter((c) => c?.isFeatured ?? false) ?? [];
 
   return (
-    <LayoutShell className="min-h-screen bg-[#121212] text-[#F5F5F5]">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-10 lg:py-14">
-        <header className="flex flex-col gap-6 border-b border-[#2E2E2E] pb-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#B7B7B7]">
-              Returnz Case Ledger
-            </p>
-            <h1 className="font-['Lora'] text-3xl font-semibold tracking-tight sm:text-4xl">
-              Transactions that rewired the risk curve.
-            </h1>
-            <p className="max-w-2xl font-['JetBrains_Mono'] text-xs text-[#B7B7B7] sm:text-sm">
-              A curated record of complex, cross-border and special situations mandates where
-              Returnz architected outsized outcomes under tight constraints.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 font-['JetBrains_Mono'] text-[11px] text-[#B7B7B7]">
-            <div className="flex items-center gap-2 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] px-3 py-2">
-              <Filter className="h-3.5 w-3.5 text-[#B7B7B7]" />
-              <span className="uppercase tracking-[0.16em]">Filter by sector</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setSortKey(sortKey === 'recent' ? 'alpha' : 'recent')}
-              className="inline-flex items-center gap-2 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] px-3 py-2 text-[11px] transition-colors hover:border-[#0077FF]"
-            >
-              <span className="uppercase tracking-[0.16em]">
-                {sortKey === 'recent' ? 'Sort: recent first' : 'Sort: alphabetical'}
-              </span>
-              <ChevronDown className="h-3 w-3" />
-            </button>
-          </div>
-        </header>
-
-        <div className="flex flex-wrap gap-2">
-          {sectors.map((sector) => {
-            const active = sector === activeSector;
-            return (
-              <button
-                key={sector}
-                type="button"
-                onClick={() => setActiveSector(sector)}
-                className={cn(
-                  'rounded-full border px-3.5 py-1.5 text-xs font-[',
-                  "JetBrains_Mono'] uppercase tracking-[0.16em] transition-colors",
-                  active
-                    ? 'border-[#0077FF] bg-[#0077FF] text-black'
-                    : 'border-[#2E2E2E] bg-[#1E1E1E] text-[#B7B7B7] hover:border-[#0077FF]'
-                )}
-              >
-                {sector}
-              </button>
-            );
-          })}
-        </div>
-
-        <section className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {sortedFiltered.map((item, index) => (
-            <motion.button
-              key={item?.id ?? index}
-              type="button"
-              onClick={() => handleCardClick(item ?? null)}
-              whileHover={{ y: -4 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-              className="group flex flex-col overflow-hidden rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] text-left"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={item?.thumbnailUrl ?? 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80'}
-                  crossOrigin="anonymous"
-                  alt={item?.title ?? 'Case study'}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-                <div className="absolute bottom-3 left-3 rounded-full bg-black/70 px-3 py-1 text-[10px] font-['JetBrains_Mono'] uppercase tracking-[0.18em] text-[#F5F5F5]">
-                  {item?.sector ?? 'Unspecified'}
+    <AppLayout>
+      <main
+        className={`min-h-screen bg-[#121212] text-[#EAEAEA] pt-28 pb-20 px-4 sm:px-6 lg:px-10 ${className}`}
+      >
+        <section className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="grid gap-10 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] items-start"
+          >
+            <div className="space-y-6">
+              <p className="text-xs tracking-[0.32em] uppercase text-[#A6A6A6] font-mono">
+                Returnz Case Files
+              </p>
+              <h1 className="font-['Playfair Display'] text-3xl sm:text-4xl lg:text-5xl leading-[1.1]">
+                Capital stories
+                <span className="block text-[#A6A6A6] font-normal text-base sm:text-lg mt-4 font-['Lora']">
+                  A curated ledger of mandates where discretion, structure, and
+                  timing compounded into asymmetric outcomes.
+                </span>
+              </h1>
+              <div className="flex flex-wrap gap-4 text-xs sm:text-sm text-[#A6A6A6] font-['Lora']">
+                <div className="rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A] px-4 py-3 flex flex-col gap-1 min-w-[140px]">
+                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
+                    Closed mandates
+                  </span>
+                  <span className="text-[#EAEAEA] text-base">
+                    {caseStudies?.length ?? 0}
+                  </span>
                 </div>
-              </div>
-              <div className="flex flex-1 flex-col gap-3 p-4">
-                <div className="space-y-1">
-                  <h2 className="font-['Lora'] text-base font-semibold leading-snug">
-                    {item?.title ?? 'Untitled mandate'}
-                  </h2>
-                  <p className="font-['JetBrains_Mono'] text-[11px] uppercase tracking-[0.18em] text-[#B7B7B7]">
-                    {item?.headline ?? 'Mandate overview'}
-                  </p>
+                <div className="rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A] px-4 py-3 flex flex-col gap-1 min-w-[160px]">
+                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
+                    Featured mandates
+                  </span>
+                  <span className="text-[#EAEAEA] text-base">
+                    {featured?.length ?? 0}
+                  </span>
                 </div>
-                <p className="line-clamp-3 font-['JetBrains_Mono'] text-xs text-[#B7B7B7]">
-                  {item?.summary ?? 'No summary available.'}
-                </p>
-                <div className="mt-auto flex items-center justify-between pt-2 font-['JetBrains_Mono'] text-[11px] text-[#B7B7B7]">
-                  <span>{item?.timeline ?? 'Timeline confidential'}</span>
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-[#0077FF]">
-                    View mandate →
+                <div className="rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A] px-4 py-3 flex flex-col gap-1 min-w-[170px]">
+                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase">
+                    Primary sectors
+                  </span>
+                  <span className="text-[#EAEAEA] text-base">
+                    {Array.from(
+                      new Set(
+                        (caseStudies ?? []).map((c) => c?.sector ?? ''),
+                      ),
+                    ).filter(Boolean).length}
                   </span>
                 </div>
               </div>
-            </motion.button>
-          ))}
+            </div>
+
+            <div className="relative rounded-[18px] border border-[#2C2C2C] bg-[#101010] overflow-hidden">
+              <motion.img
+                initial={{ scale: 1.08, opacity: 0.85 }}
+                animate={{ scale: 1.02, opacity: 1 }}
+                transition={{ duration: 1.1, ease: 'easeOut' }}
+                src={
+                  caseStudies?.[0]?.imageUrls?.[0] ??
+                  'https://images.unsplash.com/photo-1611416457332-946853cc75d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8MXx8bmlnaHQlMjBjaXR5JTIwZmluYW5jaWFsJTIwZGlzdHJpY3QlMjBza3lsaW5lJTIwZWRpdG9yaWFsfGVufDB8MHx8fDE3OTMwMTg0NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop'
+                }
+                crossOrigin="anonymous"
+                alt={caseStudies?.[0]?.title ?? 'Returnz mandate skyline'}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-black/10 to-transparent" />
+              <div className="absolute inset-x-5 bottom-4 flex flex-col gap-2">
+                <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-[#A6A6A6]">
+                  Live market aperture
+                </p>
+                <p className="font-['Lora'] text-xs text-[#EAEAEA]/90 max-w-md">
+                  Each case distills structure, counterparty dynamics, and
+                  execution cadence—curated for principals and investment
+                  committees.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </section>
-      </div>
-      <CaseStudyModal open={modalOpen} onOpenChange={handleModalChange} caseStudy={selected} />
-    </LayoutShell>
+
+        <section className="max-w-6xl mx-auto mt-16 border-t border-[#2C2C2C] pt-10">
+          <CaseStudiesMasonry />
+        </section>
+      </main>
+    </AppLayout>
   );
 }
 
-export default CaseStudies;
+export default CaseStudiesPage;
+
+export type CaseStudiesMasonryProps = {
+  className?: string;
+};
+
+export function CaseStudiesMasonry({ className = '' }: CaseStudiesMasonryProps) {
+  return (
+    <div className={className}>
+      
+    </div>
+  );
+}

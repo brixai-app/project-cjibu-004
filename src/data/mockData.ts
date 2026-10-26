@@ -1,428 +1,411 @@
-import type { Metric, CaseStudy, Service, Testimonial } from '@/types';
+import {
+  Profile,
+  About,
+  Service,
+  ServiceCategory,
+  CaseStudy,
+  Testimonial,
+  SortKey,
+  FilterKey,
+} from '@/types';
 
-export const globalMetrics: Metric[] = [
-  {
-    id: 'aum',
-    label: 'Capital advised',
-    value: 18,
-    suffix: 'B+',
-    prefix: '$',
-    description: 'Cumulative transaction value across mandates since 2014',
-  },
-  {
-    id: 'deals',
-    label: 'Closed transactions',
-    value: 127,
-    suffix: '',
-    description: 'Sell-side and buy-side mandates completed across sectors',
-  },
-  {
-    id: 'premium',
-    label: 'Avg. premium to initial bid',
-    value: 23,
-    suffix: '%',
-    description: 'Median uplift vs. first actionable indication of interest',
-  },
-  {
-    id: 'countries',
-    label: 'Cross-border jurisdictions',
-    value: 19,
-    suffix: '',
-    description: 'Geographies navigated for regulatory and execution',
-  },
+export const serviceCategories: ServiceCategory[] = [
+  'Advisory',
+  'Capital',
+  'Restructuring',
+  'Strategic',
 ];
+
+export const caseStudySortOptions: { key: SortKey; label: string }[] = [
+  { key: 'year', label: 'Year' },
+  { key: 'dealSize', label: 'Deal Size' },
+  { key: 'client', label: 'Client' },
+  { key: 'sector', label: 'Sector' },
+];
+
+export const caseStudyFilterOptions: { key: FilterKey; label: string }[] = [
+  { key: 'All', label: 'All Mandates' },
+  { key: 'M&A', label: 'M&A' },
+  { key: 'Capital', label: 'Capital Solutions' },
+  { key: 'Restructuring', label: 'Restructuring' },
+  { key: 'PrivateEquity', label: 'Private Equity' },
+  { key: 'FamilyOffice', label: 'Family Office' },
+];
+
+export const profile: Profile = {
+  id: 'principal',
+  name: 'Returnz Advisory',
+  title: 'Independent Investment Banking Boutique',
+  location: 'London · New York · Dubai',
+  headline: 'Quietly structuring complex capital moments for families, founders, and funds.',
+  bio: 'Returnz is a discreet advisory studio specialising in off-market M&A, capital solutions, and special situations for privately held businesses and sophisticated capital allocators.',
+  avatarUrl: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+  yearsExperience: 18,
+  sectors: ['Business Services', 'Technology', 'Consumer', 'Industrial'],
+  metrics: {
+    dealsAdvised: 120,
+    capitalRaised: 7.4,
+    avgDealSize: 180,
+    geographies: ['UK', 'DACH', 'MENA', 'North America'],
+  },
+};
+
+export const about: About = {
+  id: 'about-returnz',
+  mission:
+    'To compound the quiet wealth of our clients by architecting transactions that age well, not loudly.',
+  philosophy:
+    'We operate at the intersection of discipline and discretion: concentrated mandates, deep preparation, and a bias for outcomes over theatre.',
+  narrative: [
+    'Returnz was built as a response to mandates that were too nuanced for volume-driven banks yet too consequential for generic brokers.',
+    'We embed early with principals, map the true option set, then prosecute a narrow strategy with institutional depth and boutique speed.',
+    'Every engagement is partner-led, with a single spine of accountability from first conversation to funds flow.',
+  ],
+  highlightMetrics: [
+    {
+      id: 'realized-exits',
+      label: 'Realised Exits',
+      value: '£4.1bn+',
+      descriptor: 'closed across mid-market control and minority transactions',
+    },
+    {
+      id: 'repeat-clients',
+      label: 'Repeat Mandates',
+      value: '68%',
+      descriptor: 'of clients have engaged Returnz on more than one transaction',
+    },
+    {
+      id: 'crossborder',
+      label: 'Cross-Border',
+      value: '3.2x',
+      descriptor: 'average valuation uplift on cross-border competitive processes',
+    },
+    {
+      id: 'time-to-term-sheet',
+      label: 'Term Sheet',
+      value: '9.5 weeks',
+      descriptor: 'median time from long list to signed, actionable term sheet',
+    },
+  ],
+  timeline: [
+    {
+      id: 'origin',
+      year: '2012',
+      title: 'Origins in Mid-Market M&A',
+      description:
+        'The founding partners left bulge-bracket platforms to focus exclusively on founder-led and family office backed companies.',
+    },
+    {
+      id: 'capital-solutions',
+      year: '2016',
+      title: 'Capital Solutions Platform',
+      description:
+        'Expanded capabilities into structured equity and credit solutions for sponsors and special situations.',
+    },
+    {
+      id: 'global-reach',
+      year: '2019',
+      title: 'Global Family Office Network',
+      description:
+        'Formalised a curated network of global family offices to unlock off-market capital and strategic partners.',
+    },
+    {
+      id: 'today',
+      year: 'Today',
+      title: 'Returnz Studio',
+      description:
+        'A focused advisory studio acting as transaction architect, sparring partner, and long-term sounding board.',
+    },
+  ],
+};
 
 export const services: Service[] = [
   {
-    id: 'm-a-advisory',
-    name: 'M&A Advisory',
-    slug: 'm-a-advisory',
-    category: 'Transactions',
-    tagline: 'Full-cycle execution from indication to closing dinner.',
-    description:
-      'Strategic and tactical advisory on sell-side and buy-side mandates, with rigorous process design, counter-party mapping, and negotiation choreography.',
-    outcomes: [
-      'Tightly run auction dynamics with credible competitive tension',
-      'Transaction structures aligned to board and sponsor objectives',
-      'Fact-based valuations anchored in investor-ready narratives',
-    ],
-    spotlightMetric: {
-      id: 'sell-side-premium',
-      label: 'Sell-side premium vs. sector median',
-      value: 310,
-      suffix: 'bps',
-      description: 'Median premium achieved across realized mandates.',
-    },
-  },
-  {
-    id: 'capital-raises',
-    name: 'Capital Raises',
-    slug: 'capital-raises',
-    category: 'Financing',
-    tagline: 'Architected capital stacks that survive market cycles.',
-    description:
-      'Debt and equity capital raise support, from story construction to term sheet negotiation and documentation support with legal counsel.',
-    outcomes: [
-      'Investor shortlists calibrated to mandate size and risk profile',
-      'Financing structures designed for covenant headroom',
-      'Reduced closing friction via synchronized workstreams',
-    ],
-    spotlightMetric: {
-      id: 'mandate-size',
-      label: 'Median mandate size',
-      value: 275,
-      suffix: 'M',
-      prefix: '$',
-      description: 'Typical single-transaction size for lead mandates.',
-    },
-  },
-  {
-    id: 'strategic-advisory',
-    name: 'Strategic Advisory',
-    slug: 'strategic-advisory',
+    id: 'sell-side-manda',
+    name: 'Sell-Side M&A',
     category: 'Advisory',
-    tagline: 'Board-level clarity under real-world constraints.',
+    summary: 'Structured, globally marketed sale processes for control and significant minority stakes.',
     description:
-      'Independent strategic advisory on portfolio construction, market entry, and capital allocation, grounded in deep sector pattern recognition.',
+      'We design and execute disciplined sell-side processes that respect the nuance of legacy, culture, and post-transaction alignment while maximising competitive tension.',
     outcomes: [
-      'Scenario trees that quantify upside, base, and downside cases',
-      'Objective challenge to internal conviction and legacy plans',
-      'Execution roadmaps with crisp governance milestones',
+      'Positioning and equity story articulation',
+      'Curated global buyer universe and access',
+      'Tight, staged process with asymmetric information control',
     ],
-    spotlightMetric: {
-      id: 'board-engagements',
-      label: 'Board strategy sessions facilitated',
-      value: 60,
-      suffix: '+',
-      description: 'Multi-session mandates with public and private boards.',
-    },
+    tags: ['Sell-Side', 'Control', 'Competitive Process'],
+    typicalMandateSize: '£50m – £500m enterprise value',
+    timelineRange: '6 – 12 months',
+  },
+  {
+    id: 'buy-side-manda',
+    name: 'Buy-Side M&A',
+    category: 'Advisory',
+    summary: 'Targeted acquisition programs and platform build-outs for sponsors and strategic buyers.',
+    description:
+      'We support disciplined acquirers with thematic origination, bespoke outreach, and execution support on complex and proprietary situations.',
+    outcomes: [
+      'Pipeline strategy and screening',
+      'Direct, senior-level access to principals',
+      'End-to-end execution support alongside internal teams',
+    ],
+    tags: ['Buy-Side', 'Origination', 'Platforms'],
+    typicalMandateSize: '£25m – £300m enterprise value',
+    timelineRange: '3 – 18 months',
+  },
+  {
+    id: 'growth-capital',
+    name: 'Growth & Structured Capital',
+    category: 'Capital',
+    summary: 'Minority equity and hybrid capital solutions for compounding businesses.',
+    description:
+      'For founders and families optimising for control, we arrange bespoke capital stacks blending equity, preferred, and credit to fund growth, liquidity, or recapitalisations.',
+    outcomes: [
+      'Non-dilutive or less dilutive alternatives to traditional equity',
+      'Partner selection aligned with governance and horizon',
+      'Optimised cost of capital and covenant structure',
+    ],
+    tags: ['Growth Capital', 'Minority', 'Structured Equity'],
+    typicalMandateSize: '£20m – £250m capital raised',
+    timelineRange: '4 – 10 months',
   },
   {
     id: 'special-situations',
-    name: 'Special Situations',
-    slug: 'special-situations',
+    name: 'Special Situations & Restructuring',
     category: 'Restructuring',
-    tagline: 'Complex capital structures, simplified and re-aligned.',
+    summary: 'Calm, creditor-aware navigation of stressed and complex capital structures.',
     description:
-      'Support for liability management, distressed M&A, and covenant resets, coordinating across lenders, sponsors, and management teams.',
+      'We advise owners, boards, and creditors on balance sheet realignments, structured solutions, and value-preserving alternatives to formal processes.',
     outcomes: [
-      'Extended runways without over-optimizing short-term optics',
-      'Stakeholder maps that surface real decision-makers',
-      'Structures built to avoid repeat distress scenarios',
+      'Stakeholder mapping and scenario design',
+      'Independent option analysis and valuation',
+      'Execution of liability management and new money solutions',
     ],
-    spotlightMetric: {
-      id: 'runway-extension',
-      label: 'Runway extension achieved',
-      value: 24,
-      suffix: ' months',
-      description: 'Median liquidity runway created post-transaction.',
-    },
+    tags: ['Restructuring', 'Liability Management', 'Special Situations'],
+    typicalMandateSize: '£40m – £600m capital structure',
+    timelineRange: '3 – 9 months',
   },
+  {
+    id: 'strategic-advisory',
+    name: 'Principal & Board Advisory',
+    category: 'Strategic',
+    summary: 'Long-horizon strategic sparring for capital allocation and transaction readiness.',
+    description:
+      'We embed alongside principals and boards as an independent, transaction-aware advisor on capital allocation, optionality, and timing.',
+    outcomes: [
+      'Clear map of strategic and financial options',
+      'Preparation for future sale, raise, or consolidation',
+      'Confidential second opinions on inbound offers',
+    ],
+    tags: ['Board Advisory', 'Capital Allocation', 'Readiness'],
+    typicalMandateSize: '£100m – £1bn enterprise value',
+    timelineRange: 'Ongoing or 6 – 24 month mandates',
+  },
+];
+
+const sharedCityScapes: string[] = [
+  'https://images.unsplash.com/photo-1611416457332-946853cc75d6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8MXx8bmlnaHQlMjBjaXR5JTIwZmluYW5jaWFsJTIwZGlzdHJpY3QlMjBza3lsaW5lJTIwZWRpdG9yaWFsfGVufDB8MHx8fDE3OTMwMTg0NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1544214036-5aaeb9e32d11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8Mnx8bmlnaHQlMjBjaXR5JTIwZmluYW5jaWFsJTIwZGlzdHJpY3QlMjBza3lsaW5lJTIwZWRpdG9yaWFsfGVufDB8MHx8fDE3OTMwMTg0NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1569169507605-f91e088ce91a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8M3x8bmlnaHQlMjBjaXR5JTIwZmluYW5jaWFsJTIwZGlzdHJpY3QlMjBza3lsaW5lJTIwZWRpdG9yaWFsfGVufDB8MHx8fDE3OTMwMTg0NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
+];
+
+const sharedDealRooms: string[] = [
+  'https://images.unsplash.com/photo-1603796846097-bee99e4a601f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8MXx8Y2xvc2UtdXAlMjBoYW5kcyUyMHNpZ25pbmclMjBkZWFsJTIwY29udHJhY3QlMjBjaW5lbWF0aWN8ZW58MHwwfHx8MTc5MzAxODQ0M3ww&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1681505531034-8d67054e07f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8Mnx8Y2xvc2UtdXAlMjBoYW5kcyUyMHNpZ25pbmclMjBkZWFsJTIwY29udHJhY3QlMjBjaW5lbWF0aWN8ZW58MHwwfHx8MTc5MzAxODQ0M3ww&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1627518788331-b3b7fdaa382f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8M3x8Y2xvc2UtdXAlMjBoYW5kcyUyMHNpZ25pbmclMjBkZWFsJTIwY29udHJhY3QlMjBjaW5lbWF0aWN8ZW58MHwwfHx8MTc5MzAxODQ0M3ww&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
 ];
 
 export const caseStudies: CaseStudy[] = [
   {
-    id: 'infra-platform-rollup',
-    title: 'Pan-European Infrastructure Platform Roll-Up',
-    slug: 'infra-platform-rollup',
-    sector: 'Infrastructure',
-    headline: 'Orchestrated a multi-asset platform sale at 18.4x EBITDA.',
-    summary:
-      'Advised a sponsor-backed infrastructure platform on a dual-track sale and refinancing, coordinating five bilateral workstreams into a single competitive process.',
+    id: 'family-office-consumer',
+    slug: 'family-office-consumer-platform-sale',
+    title: 'Sale of European Luxury Consumer Platform to Global Strategic',
+    subtitle: 'A multi-jurisdiction process balancing legacy, brand, and liquidity.',
+    clientType: 'Family Office',
+    sector: 'Consumer',
+    location: 'Zurich / Paris',
+    imageUrls: sharedCityScapes,
+    mandate:
+      'Advise a European family office on the sale of a majority stake in a multi-brand luxury consumer platform.',
     challenge:
-      'Fragmented asset-level financials and inconsistent regulatory disclosures were depressing early bids and elongating diligence timelines.',
-    approach:
-      'Rebuilt a normalized asset data room, introduced standardized KPI packs, and sequenced bidders into staggered management presentations to surface price tension.',
+      'Align three shareholder groups across generations while preserving brand equity and future strategic flexibility.',
+    approach: [
+      'Reframed the equity story around brand architecture and digital optionality.',
+      'Orchestrated a staged, invitation-only process with a narrow global buyer set.',
+      'Structured a bespoke earn-out and governance package to preserve founder influence.',
+    ],
     outcome:
-      'Secured a binding offer 19% above the initial bid and closed within a 90-day signing window despite complex cross-border approvals.',
+      'Closed transaction with a global strategic buyer at a premium valuation with significant rolled equity for the family office.',
     metrics: [
       {
-        id: 'ev-ebitda-multiple',
-        label: 'Realized EV / EBITDA',
-        value: 18.4,
-        suffix: 'x',
-        description: 'Headline multiple at signing vs. 15.2x initial IOI.',
+        id: 'valuation-uplift',
+        label: 'Headline Multiple',
+        value: '14.3x EBITDA',
+        context: 'representing a 32% premium to initial inbound offers',
       },
       {
-        id: 'bid-uplift',
-        label: 'Premium to first IOI',
-        value: 19,
-        suffix: '%',
-        description: 'Price increase from first actionable indication.',
+        id: 'family-rollover',
+        label: 'Rollover Stake',
+        value: '22%',
+        context: 'structured to retain governance and future upside',
       },
       {
-        id: 'timeline-days',
-        label: 'Signing timeline',
-        value: 90,
-        suffix: ' days',
-        description: 'From teaser launch to signed SPA.',
+        id: 'process-duration',
+        label: 'Process Duration',
+        value: '7.5 months',
+        context: 'from mandate signing to funds flow',
       },
     ],
-    chartsData: [
-      {
-        id: 'bid-evolution',
-        name: 'Bid evolution',
-        color: '#0077FF',
-        points: [
-          { label: 'IOI', value: 100 },
-          { label: 'LOI', value: 112 },
-          { label: 'Final', value: 119 },
-        ],
-      },
-    ],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-    servicesUsed: ['M&A Advisory', 'Strategic Advisory'],
-    timeline: '9-month mandate from pre-process to closing',
-    location: 'Frankfurt / Amsterdam',
+    servicesUsed: ['Sell-Side M&A', 'Principal & Board Advisory'],
+    year: '2023',
+    dealSize: '€420m',
+    isFeatured: true,
   },
   {
-    id: 'saas-growth-recap',
-    title: 'Growth Recap for Vertical SaaS Leader',
-    slug: 'saas-growth-recap',
-    sector: 'Software',
-    headline: 'Raised $220M in growth capital while preserving founder control.',
-    summary:
-      'Led a structured growth recapitalization for a bootstrapped SaaS company, balancing secondary liquidity with continued founder governance.',
+    id: 'growth-capital-saas',
+    slug: 'growth-capital-recurring-revenue-saas',
+    title: 'Structured Growth Capital for Vertical SaaS Champion',
+    subtitle: 'Non-dilutive capital for a founder retaining control.',
+    clientType: 'Founder-Led',
+    sector: 'Software & Services',
+    location: 'London',
+    imageUrls: sharedDealRooms,
+    mandate:
+      'Arrange growth and secondary capital for a bootstrapped vertical SaaS business serving regulated industries.',
     challenge:
-      'Founders required meaningful liquidity without triggering a change-of-control or over-levering a subscription-focused balance sheet.',
-    approach:
-      'Mapped global growth equity investors, modeled multiple recap structures, and ran a targeted process with staged access to cohort analytics.',
+      'Fund international expansion and partial founder liquidity without ceding control or over-levering the balance sheet.',
+    approach: [
+      'Mapped sponsor and credit appetite across hybrid capital providers.',
+      'Ran a dual-track preferred equity and unitranche process to maximise options.',
+      'Engineered a covenant-light structure with aligned incentives around ARR growth.',
+    ],
     outcome:
-      'Closed a minority growth round at 14.1x ARR with a syndicate offering strategic distribution channels.',
+      'Secured a tailored growth capital package combining preferred equity and senior debt with no governance overreach.',
     metrics: [
       {
-        id: 'arr-multiple',
-        label: 'Implied ARR multiple',
-        value: 14.1,
-        suffix: 'x',
-      },
-      {
-        id: 'capital-raised',
-        label: 'Capital raised',
-        value: 220,
-        suffix: 'M',
-        prefix: '$',
+        id: 'arr-growth',
+        label: 'ARR Growth',
+        value: '3.1x',
+        context: 'ARR growth within 24 months post-transaction',
       },
       {
         id: 'founder-ownership',
-        label: 'Post-deal founder ownership',
-        value: 62,
-        suffix: '%',
+        label: 'Founder Ownership',
+        value: '72%',
+        context: 'retained fully diluted ownership post-transaction',
       },
-    ],
-    chartsData: [
       {
-        id: 'ownership-structure',
-        name: 'Ownership structure',
-        color: '#00C2FF',
-        points: [
-          { label: 'Founders', value: 62 },
-          { label: 'Investors', value: 30 },
-          { label: 'ESOP', value: 8 },
-        ],
+        id: 'cost-of-capital',
+        label: 'Blended Cost',
+        value: '8.4%',
+        context: 'effective blended cost of capital over the first three years',
       },
     ],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
-    servicesUsed: ['Capital Raises', 'Strategic Advisory'],
-    timeline: '6-month process from mandate to funding',
-    location: 'London / New York',
+    servicesUsed: ['Growth & Structured Capital', 'Principal & Board Advisory'],
+    year: '2022',
+    dealSize: '£95m',
+    isFeatured: true,
   },
   {
-    id: 'logistics carveout',
-    title: 'Corporate Carve-Out of Logistics Division',
-    slug: 'logistics-carveout',
-    sector: 'Transportation',
-    headline: 'Separated a non-core logistics unit into a stand-alone asset.',
-    summary:
-      'Supported a conglomerate in carving out a logistics division, establishing stand-alone economics and preparing it for a sponsor-led sale.',
-    challenge:
-      'Legacy systems and shared services obscured true profitability, making sponsor underwriting difficult.',
-    approach:
-      'Built a granular cost allocation model, validated management adjustments, and created a separation roadmap with day-one readiness metrics.',
-    outcome:
-      'Enabled a competitive auction that resulted in a sale at 11.6x EBITDA with a clean separation plan.',
-    metrics: [
-      {
-        id: 'margin-uplift',
-        label: 'Identified margin uplift',
-        value: 260,
-        suffix: 'bps',
-      },
-      {
-        id: 'sg-a-disentangled',
-        label: 'Allocated group SG&A',
-        value: 87,
-        suffix: '%',
-      },
+    id: 'restructuring-industrial',
+    slug: 'special-situations-industrial-realignment',
+    title: 'Balance Sheet Realignment for Industrial Services Group',
+    subtitle: 'Preserving operating footprint through a complex stakeholder landscape.',
+    clientType: 'Sponsor-Backed',
+    sector: 'Industrial Services',
+    location: 'Manchester',
+    imageUrls: [
+      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8MXx8YWJzdHJhY3QlMjBmaW5hbmNpYWwlMjBjaGFydCUyMG9uJTIwZGFyayUyMHNjcmVlbiUyMG1hY3JvJTIwcGhvdG98ZW58MHwwfHx8MTc5MzAxODQ0NHww&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1689732888407-310424e3a372?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTIyfDB8MXxzZWFyY2h8Mnx8YWJzdHJhY3QlMjBmaW5hbmNpYWwlMjBjaGFydCUyMG9uJTIwZGFyayUyMHNjcmVlbiUyMG1hY3JvJTIwcGhvdG98ZW58MHwwfHx8MTc5MzAxODQ0NHww&ixlib=rb-4.1.0&q=80&w=1080&q=80&w=1200&auto=format&fit=crop',
     ],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1400&q=85',
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1400&q=85',
-    servicesUsed: ['M&A Advisory', 'Special Situations'],
-    timeline: '12-month end-to-end separation and sale',
-    location: 'Zurich',
-  },
-  {
-    id: 'energy-restructuring',
-    title: 'Balance Sheet Restructuring for Energy Portfolio',
-    slug: 'energy-restructuring',
-    sector: 'Energy',
-    headline: 'Stabilized a multi-asset energy portfolio amid price shocks.',
-    summary:
-      'Advised a sponsor and management team through a covenant reset, asset sale, and new money injection to restore liquidity.',
+    mandate:
+      'Advise sponsor and board on options to stabilise a levered industrial services platform facing covenant pressure.',
     challenge:
-      'Volatile commodity prices and tight covenants created a narrow runway with limited appetite for new risk from existing lenders.',
-    approach:
-      'Led a consensual restructuring process, combining selective asset sales with a structured equity injection and covenant amendments.',
+      'Navigate a tight liquidity runway, union considerations, and multi-layer creditor stack without disrupting key contracts.',
+    approach: [
+      'Constructed an independent downside and recovery analysis shared with all stakeholders.',
+      'Negotiated covenant resets and maturity extensions with senior lenders.',
+      'Secured new-money capital from a specialised credit investor alongside sponsor support.',
+    ],
     outcome:
-      'Extended runway by 30 months while maintaining sponsor control and protecting key operating assets.',
+      'Delivered a consensual recapitalisation, avoided formal insolvency processes, and preserved over 900 jobs.',
     metrics: [
       {
         id: 'debt-reduction',
-        label: 'Gross debt reduction',
-        value: 28,
-        suffix: '%',
+        label: 'Gross Debt Reduction',
+        value: '£120m',
+        context: 'nominal reduction through equitisation and paydown',
       },
       {
-        id: 'runway-extension-energy',
-        label: 'Liquidity runway extension',
-        value: 30,
-        suffix: ' months',
+        id: 'liquidity-runway',
+        label: 'Liquidity Runway',
+        value: '24+ months',
+        context: 'projected runway post-transaction under base case',
+      },
+      {
+        id: 'job-preservation',
+        label: 'Roles Preserved',
+        value: '93%',
+        context: 'of direct roles across the core operating footprint',
       },
     ],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1400&q=85',
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1400&q=85',
-    servicesUsed: ['Special Situations', 'Strategic Advisory'],
-    timeline: '9-month restructuring and follow-on monitoring',
-    location: 'Oslo',
-  },
-  {
-    id: 'consumer-omnichannel',
-    title: 'Omnichannel Expansion for Consumer Brand',
-    slug: 'consumer-omnichannel',
-    sector: 'Consumer',
-    headline: 'Orchestrated a minority sale to fuel omnichannel expansion.',
-    summary:
-      'Helped a premium consumer brand transition from wholesale-heavy distribution to a modern omnichannel mix via a strategic investor.',
-    challenge:
-      'Brand equity needed to be preserved while materially shifting channel economics and marketing intensity.',
-    approach:
-      'Developed an investor-ready growth case with granular cohort analysis, DTC unit economics, and retail partnership benchmarks.',
-    outcome:
-      'Closed a minority investment at 3.4x revenue with structured earn-outs tied to channel penetration.',
-    metrics: [
-      {
-        id: 'revenue-multiple',
-        label: 'Revenue multiple',
-        value: 3.4,
-        suffix: 'x',
-      },
-      {
-        id: 'dtc-mix',
-        label: 'DTC revenue mix post-deal',
-        value: 48,
-        suffix: '%',
-      },
-    ],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=85',
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=85',
-    servicesUsed: ['M&A Advisory', 'Capital Raises'],
-    timeline: '7-month investor search and execution',
-    location: 'Paris',
-  },
-  {
-    id: 'digital-infra-jv',
-    title: 'Digital Infrastructure Joint Venture',
-    slug: 'digital-infra-jv',
-    sector: 'Digital Infrastructure',
-    headline: 'Structured a cross-border JV to accelerate network rollout.',
-    summary:
-      'Advised two regional operators on forming a joint venture to pool capex and accelerate digital infrastructure deployment.',
-    challenge:
-      'Asymmetrical asset quality and divergent governance expectations risked stalling negotiations.',
-    approach:
-      'Ran a structured negotiation process, re-valued contributed assets, and established a governance framework with clear veto mechanics.',
-    outcome:
-      'Signed a JV with aligned incentives, pooled procurement, and a pre-agreed roadmap for future equity injections.',
-    metrics: [
-      {
-        id: 'capex-savings',
-        label: 'Projected capex savings',
-        value: 17,
-        suffix: '%',
-      },
-      {
-        id: 'rollout-acceleration',
-        label: 'Network rollout acceleration',
-        value: 22,
-        suffix: '%',
-      },
-    ],
-    thumbnailUrl:
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
-    heroImageUrl:
-      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
-    servicesUsed: ['Strategic Advisory'],
-    timeline: '5-month design and negotiation',
-    location: 'Singapore',
+    servicesUsed: ['Special Situations & Restructuring'],
+    year: '2021',
+    dealSize: '£260m',
+    isFeatured: false,
   },
 ];
 
 export const testimonials: Testimonial[] = [
   {
-    id: 'chair-infra',
-    name: 'Elena Meyer',
-    role: 'Chair of the Board',
-    company: 'Nordbridge Infrastructure Partners',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
+    id: 'fo-principal',
+    name: 'Elena Weiss',
+    role: 'Chief Investment Officer',
+    company: 'Weiss Familienholding',
     quote:
-      'Returnz ran the most disciplined process our board has seen—every discussion was anchored in data, not theatre.',
-    highlight: 'Disciplined, data-led process with clear trade-off framing.',
-    relationship: 'Sell-side M&A and ongoing strategic advisory',
+      'Returnz behaved like an internal deal team with external reach. The process was quietly intense, never theatrical, and the outcome exceeded both our economic and qualitative objectives.',
+    rating: 5,
+    sector: 'Consumer',
+    relationship: 'Client',
+    avatarUrl: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+    highlightDealId: 'family-office-consumer',
   },
   {
     id: 'founder-saas',
-    name: 'David Liu',
+    name: 'David Lin',
     role: 'Founder & CEO',
-    company: 'SignalPath Systems',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    company: 'RegAxis Technologies',
     quote:
-      'They translated our messy product story into an investor narrative that still feels authentic to our team.',
-    highlight: 'Narrative precision without sacrificing founder voice.',
-    relationship: 'Growth recapitalization and board strategy sessions',
+      'They translated our obsession with product into a crisp capital story and negotiated like owners, not brokers.',
+    rating: 5,
+    sector: 'Software & Services',
+    relationship: 'Client',
+    avatarUrl: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80',
+    highlightDealId: 'growth-capital-saas',
   },
   {
-    id: 'cfo-energy',
-    name: 'Maria Rodríguez',
-    role: 'Group CFO',
-    company: 'HelioCore Energy',
-    avatarUrl:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    id: 'credit-partner',
+    name: 'Sophia Patel',
+    role: 'Managing Director, Special Situations',
+    company: 'Arbor Ridge Capital',
     quote:
-      'In a stressful restructuring, Returnz were the only ones consistently ahead of the next lender question.',
-    highlight: 'Execution under pressure with lender trust intact.',
-    relationship: 'Special situations and balance sheet restructuring',
+      'Their work in stressed situations is unusually calm and analytical. Documentation arrived early, not late, and always reflected the commercial reality.',
+    rating: 4.8,
+    sector: 'Industrial Services',
+    relationship: 'Partner',
+    avatarUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
+    highlightDealId: 'restructuring-industrial',
   },
 ];
 
 export const mockData = {
-  globalMetrics,
+  profile,
+  about,
   services,
   caseStudies,
   testimonials,
+  serviceCategories,
+  caseStudySortOptions,
+  caseStudyFilterOptions,
 };
 
 export default mockData;

@@ -1,208 +1,207 @@
-import React, { useMemo, useState } from 'react';
-import { services, caseStudies } from '@/data/mockData';
-import { Service, CaseStudy } from '@/types';
-import LayoutShell from '@/components/LayoutShell';
-import CaseStudyModal from '@/components/CaseStudyModal';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { services } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 
-export function Services() {
-  const [selectedSlug, setSelectedSlug] = useState<string>(services?.[0]?.slug ?? '');
-  const [activeCaseStudy, setActiveCaseStudy] = useState<CaseStudy | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+export type ServicesPageProps = {
+  className?: string;
+};
 
-  const selectedService: Service | undefined = useMemo(
-    () => services?.find((s) => s?.slug === selectedSlug),
-    [selectedSlug]
-  );
+type ServicesAlternatingListProps = {
+  className?: string;
+};
 
-  const relatedCaseStudy: CaseStudy | undefined = useMemo(
-    () =>
-      caseStudies?.find((c) =>
-        c?.servicesUsed?.some(
-          (name) => name?.toLowerCase?.() === selectedService?.name?.toLowerCase?.()
-        )
-      ),
-    [selectedService]
-  );
-
-  const handleOpenCaseStudy = () => {
-    if (!relatedCaseStudy) return;
-    setActiveCaseStudy(relatedCaseStudy);
-    setModalOpen(true);
-  };
-
+function ServicesAlternatingList({ className = '' }: ServicesAlternatingListProps) {
   return (
-    <LayoutShell className="min-h-screen bg-[#121212] text-[#F5F5F5]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:py-14 lg:flex-row">
-        <div className="lg:w-[38%]">
-          <h1 className="font-['Lora'] text-3xl font-semibold tracking-tight sm:text-4xl">
-            Mandate workbench
-          </h1>
-          <p className="mt-3 max-w-md font-['JetBrains Mono'] text-xs text-[#B7B7B7] sm:text-sm">
-            Select a mandate lane to inspect execution focus, expected outcomes, and live precedent
-            transactions powered by Returnz case studies.
-          </p>
-          <div className="mt-6 flex flex-col gap-2 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] p-2">
-            {services?.map((service) => {
-              const isActive = service?.slug === selectedSlug;
-              return (
-                <button
-                  key={service?.id}
-                  type="button"
-                  onClick={() => setSelectedSlug(service?.slug ?? '')}
-                  className={cn(
-                    'group flex w-full items-start justify-between rounded-[12px] px-3 py-3 text-left transition-colors',
-                    isActive ? 'bg-[#121212]' : 'hover:bg-[#121212]'
-                  )}
-                >
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-['JetBrains Mono'] text-[11px] uppercase tracking-[0.14em] text-[#B7B7B7]">
-                        {service?.category ?? 'Advisory'}
-                      </span>
-                    </div>
-                    <div className="mt-1 flex items-center gap-1">
-                      <span className="font-['Lora'] text-sm sm:text-base">
-                        {service?.name ?? 'Advisory'}
-                      </span>
-                      {isActive && (
-                        <ChevronRight className="h-3 w-3 text-[#0077FF]" aria-hidden="true" />
-                      )}
-                    </div>
-                    <p className="mt-1 line-clamp-2 font-['JetBrains Mono'] text-[11px] text-[#B7B7B7] sm:text-xs">
-                      {service?.tagline ?? ''}
-                    </p>
-                  </div>
-                  {service?.spotlightMetric && (
-                    <div className="ml-3 rounded-[10px] border border-[#2E2E2E] bg-[#121212] px-2 py-1">
-                      <div className="font-['JetBrains Mono'] text-[10px] text-[#B7B7B7]">
-                        {service?.spotlightMetric?.label ?? ''}
-                      </div>
-                      <div className="font-['JetBrains Mono'] text-xs text-[#F5F5F5]">
-                        {service?.spotlightMetric?.prefix ?? ''}
-                        {service?.spotlightMetric?.value ?? 0}
-                        {service?.spotlightMetric?.suffix ?? ''}
-                      </div>
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="lg:w-[62%]">
-          <div className="grid gap-4 lg:h-full lg:grid-rows-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            <div className="grid gap-4 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] p-4 sm:p-5 lg:grid-cols-[1.2fr_minmax(0,1fr)]">
-              <div className="flex flex-col justify-between gap-4">
-                <div>
-                  <h2 className="font-['Lora'] text-lg font-semibold sm:text-xl">
-                    {selectedService?.name ?? 'Service'}
+    <div className={cn('space-y-16 md:space-y-24', className)}>
+      {services?.map((service, index) => {
+        const isReversed = index % 2 === 1;
+        return (
+          <motion.section
+            key={service?.id ?? index}
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className={cn(
+              'grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-stretch',
+              isReversed ? 'md:[&>*:first-child]:order-2' : ''
+            )}
+          >
+            <div className="relative overflow-hidden rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A] px-6 py-8 md:px-10 md:py-12">
+              <div className="absolute inset-px pointer-events-none bg-gradient-to-br from-white/3 via-transparent to-[#D4AF37]/5 opacity-70" />
+              <div className="relative flex items-start justify-between gap-6">
+                <div className="space-y-4">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                    {service?.category ?? 'Advisory'} Mandates
+                  </p>
+                  <h2 className="font-['Playfair_Display'] text-2xl md:text-3xl tracking-tight text-[#EAEAEA]">
+                    {service?.name ?? 'Strategic Advisory'}
                   </h2>
-                  <p className="mt-2 font-['JetBrains Mono'] text-xs text-[#B7B7B7] sm:text-sm">
-                    {selectedService?.description ?? ''}
+                  <p className="max-w-xl font-['Lora'] text-sm md:text-base text-[#A6A6A6] leading-relaxed">
+                    {service?.summary ?? ''}
                   </p>
                 </div>
-                <ul className="mt-1 space-y-1.5">
-                  {selectedService?.outcomes?.slice(0, 4)?.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2 font-['JetBrains Mono'] text-[11px] text-[#F5F5F5]"
-                    >
-                      <span className="mt-[3px] h-1.5 w-1.5 rounded-full bg-[#0077FF]" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <motion.button
-                  type="button"
-                  whileHover={{ x: 2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="mt-1 inline-flex items-center gap-2 rounded-[999px] bg-[#0077FF] px-4 py-2 font-['JetBrains Mono'] text-xs font-medium text-black"
-                  onClick={handleOpenCaseStudy}
-                  disabled={!relatedCaseStudy}
-                >
-                  View live precedent
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </motion.button>
+                <div className="flex flex-col items-end gap-3 text-right">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                    Typical Ticket
+                  </span>
+                  <span className="rounded-full border border-[#2C2C2C] bg-black/30 px-3 py-1.5 font-mono text-xs text-[#EAEAEA]">
+                    {service?.typicalMandateSize ?? 'Confidential'}
+                  </span>
+                  <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                    {service?.timelineRange ?? 'Timeline on request'}
+                  </span>
+                </div>
               </div>
-              <div className="relative overflow-hidden rounded-[12px] border border-[#2E2E2E] bg-[#121212]">
-                <img
+              <div className="relative mt-8 grid gap-6 md:grid-cols-2">
+                <div className="space-y-3">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                    Mandate Pattern
+                  </p>
+                  <p className="font-['Lora'] text-sm text-[#EAEAEA]/90 leading-relaxed">
+                    {service?.description ?? ''}
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                    Outcome Focus
+                  </p>
+                  <ul className="space-y-2">
+                    {(service?.outcomes ?? [])?.slice(0, 4)?.map((outcome, i) => (
+                      <li
+                        key={`${service?.id ?? index}-outcome-${i}`}
+                        className="flex items-start gap-2 text-sm font-['Lora'] text-[#EAEAEA]"
+                      >
+                        <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
+                        <span>{outcome ?? ''}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="relative mt-8 flex flex-wrap gap-2">
+                {(service?.tags ?? [])?.map((tag, i) => (
+                  <span
+                    key={`${service?.id ?? index}-tag-${i}`}
+                    className="rounded-full border border-[#2C2C2C] bg-black/40 px-3 py-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#A6A6A6]"
+                  >
+                    {tag ?? ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col justify-between gap-6">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[14px] border border-[#2C2C2C] bg-[#050505]">
+                <motion.img
+                  src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80"
                   crossOrigin="anonymous"
-                  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
-                  alt={selectedService?.name ?? 'Service visual'}
+                  alt={service?.name ?? 'Service visual'}
+                  initial={{ scale: 1.1 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, ease: 'easeOut' }}
                   className="h-full w-full object-cover opacity-80"
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent" />
-              </div>
-            </div>
-
-            <div className="grid gap-4 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] p-4 sm:p-5 lg:grid-cols-3">
-              <div className="col-span-2 flex flex-col gap-3">
-                <div className="font-['JetBrains Mono'] text-[11px] uppercase tracking-[0.18em] text-[#B7B7B7]">
-                  Execution telemetry
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {(selectedService?.spotlightMetric
-                    ? [selectedService?.spotlightMetric]
-                    : []
-                  )?.map((m) => (
-                    <div
-                      key={m?.id}
-                      className="rounded-[10px] border border-[#2E2E2E] bg-[#121212] px-3 py-2"
-                    >
-                      <div className="font-['JetBrains Mono'] text-[10px] text-[#B7B7B7]">
-                        {m?.label ?? ''}
-                      </div>
-                      <div className="mt-1 font-['JetBrains Mono'] text-sm text-[#F5F5F5]">
-                        {m?.prefix ?? ''}
-                        {m?.value ?? 0}
-                        {m?.suffix ?? ''}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-between gap-2 rounded-[12px] border border-[#2E2E2E] bg-[#121212] p-3">
-                <div>
-                  <div className="font-['JetBrains Mono'] text-[11px] text-[#B7B7B7]">
-                    Linked case
-                  </div>
-                  <div className="mt-1 font-['Lora'] text-sm">
-                    {relatedCaseStudy?.title ?? 'No linked case yet'}
-                  </div>
-                  <p className="mt-1 line-clamp-3 font-['JetBrains Mono'] text-[11px] text-[#B7B7B7]">
-                    {relatedCaseStudy?.summary ?? 'Once mandates execute, matching deals will surface here.'}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 space-y-3">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                    {service?.category ?? 'Advisory'} Lens
+                  </p>
+                  <p className="font-['Playfair_Display'] text-lg text-[#EAEAEA]">
+                    Structured for complex, cross-border balance sheets and sponsors.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleOpenCaseStudy}
-                  disabled={!relatedCaseStudy}
-                  className={cn(
-                    'inline-flex items-center justify-between rounded-[999px] px-3 py-1.5 text-[11px] font-[',
-                    relatedCaseStudy
-                      ? 'bg-[#0077FF] font-["JetBrains Mono"] text-black'
-                      : 'border border-[#2E2E2E] font-["JetBrains Mono"] text-[#B7B7B7]'
-                  )}
-                >
-                  <span>{relatedCaseStudy ? 'Open case study' : 'Awaiting transaction'}</span>
-                  <ArrowRight className="h-3 w-3" />
-                </button>
+              </div>
+              <div className="rounded-[14px] border border-[#2C2C2C] bg-[#050505] px-4 py-4 md:px-5 md:py-5">
+                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                  Mandate Snapshot
+                </p>
+                <p className="mt-2 font-['Lora'] text-xs text-[#EAEAEA]/80 leading-relaxed">
+                  Each {service?.name ?? 'mandate'} begins with a tightly scoped discovery phase,
+                  calibrating incentive structures and governance before engaging counterparties.
+                </p>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <CaseStudyModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        caseStudy={activeCaseStudy}
-      />
-    </LayoutShell>
+          </motion.section>
+        );
+      })}
+    </div>
   );
 }
 
-export default Services;
+export function ServicesPage({ className = '' }: ServicesPageProps) {
+  return (
+    <main className={cn('min-h-screen bg-[#121212] text-[#EAEAEA]', className)}>
+      <section className="border-b border-[#2C2C2C] bg-[#121212]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-16 md:flex-row md:items-end md:py-20 lg:px-0">
+          <div className="flex-1 space-y-6">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+              Services
+            </p>
+            <h1 className="font-['Playfair_Display'] text-3xl md:text-4xl lg:text-5xl tracking-tight">
+              Mandates engineered
+              <br />
+              for asymmetric outcomes.
+            </h1>
+            <p className="max-w-xl font-['Lora'] text-sm md:text-base text-[#A6A6A6] leading-relaxed">
+              Returnz operates at the intersection of strategic capital, complex carve-outs, and
+              sponsor-backed situations—designing processes that hold under scrutiny.
+            </p>
+          </div>
+          <div className="w-full max-w-xs space-y-4 md:text-right">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+              Mandate Profile
+            </p>
+            <div className="flex items-center justify-between gap-6 md:flex-col md:items-end md:justify-start">
+              <div className="space-y-1">
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                  Active Strategies
+                </p>
+                <p className="font-['Playfair_Display'] text-2xl text-[#D4AF37]">
+                  {services?.length ?? 0}
+                </p>
+              </div>
+              <div className="space-y-1">
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+                  Typical Horizon
+                </p>
+                <p className="font-['Lora'] text-sm text-[#EAEAEA]">6–18 months</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="mx-auto max-w-6xl px-4 py-16 lg:px-0 md:py-20">
+        <ServicesAlternatingList />
+      </section>
+      <section className="border-t border-[#2C2C2C] bg-[#1A1A1A]">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-10 md:flex-row md:items-center md:justify-between lg:px-0">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#A6A6A6]">
+              Next Step
+            </p>
+            <h2 className="mt-2 font-['Playfair_Display'] text-xl md:text-2xl">
+              Outline a live or prospective mandate.
+            </h2>
+            <p className="mt-2 max-w-xl font-['Lora'] text-sm text-[#A6A6A6]">
+              Share a brief context note and preferred timing; we will revert with a focused,
+              conflict-checked perspective.
+            </p>
+          </div>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 rounded-[999px] bg-[#D4AF37] px-6 py-3 text-sm font-mono uppercase tracking-[0.22em] text-black transition-colors hover:bg-[#B8921F]"
+          >
+            Discuss a mandate
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default ServicesPage;

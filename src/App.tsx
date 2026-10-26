@@ -1,60 +1,72 @@
-import React, { useCallback, useState } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import { Toaster, toast } from 'sonner';
-import LayoutShell from '@/components/LayoutShell';
-import HeaderNav from '@/components/HeaderNav';
-import ContactDrawer from '@/components/ContactDrawer';
-import Home from '@/pages/Home';
-import About from '@/pages/About';
-import Services from '@/pages/Services';
-import CaseStudies from '@/pages/CaseStudies';
-import Testimonials from '@/pages/Testimonials';
-import type { ContactFormState } from '@/types';
+import React from 'react';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import { AnimatePresence, motion } from 'framer-motion';
+import AppLayout from '@/components/AppLayout';
+import HomePage from '@/pages/Home';
+import AboutPage from '@/pages/About';
+import ServicesPage from '@/pages/Services';
+import CaseStudiesPage from '@/pages/CaseStudies';
+import TestimonialsPage from '@/pages/Testimonials';
+import ContactPage from '@/pages/Contact';
 
-export function App() {
-  const [contactOpen, setContactOpen] = useState<boolean>(false);
-
-  const handleOpenContact = useCallback(() => {
-    setContactOpen(true);
-  }, []);
-
-  const handleContactChange = useCallback((open: boolean) => {
-    setContactOpen(open ?? false);
-  }, []);
-
-  const handleContactSubmitted = useCallback((data: ContactFormState) => {
-    const name = data?.name ?? '';
-    toast.success(name ? `Mandate received, ${name}.` : 'Mandate received.', {
-      description: 'Expect a response from Returnz within one business day.',
-      position: 'bottom-right',
-    });
-    setContactOpen(false);
-  }, []);
-
+export function RouteTransitionWrapper({
+  children = null,
+}: {
+  children?: React.ReactNode;
+}) {
+  const location = useLocation();
   return (
-    <>
-      <HashRouter>
-        <div className="min-h-screen bg-[#121212] text-[#F5F5F5] font-['JetBrains_Mono',monospace]">
-          <HeaderNav openContact={handleOpenContact} />
-          <LayoutShell className="pt-20">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/case-studies" element={<CaseStudies />} />
-              <Route path="/testimonials" element={<Testimonials />} />
-            </Routes>
-          </LayoutShell>
-          <ContactDrawer
-            open={contactOpen}
-            onOpenChange={handleContactChange}
-            onSubmitted={handleContactSubmitted}
-          />
-        </div>
-      </HashRouter>
-      <Toaster richColors theme="dark" position="bottom-right" />
-    </>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location?.pathname ?? '/'}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="min-h-screen bg-[#121212] text-[#EAEAEA]"
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
-export default App;
+export function AppShell() {
+  return (
+    <HashRouter>
+      <Toaster
+        position="top-right"
+        richColors
+        toastOptions={{
+          style: {
+            background: '#1A1A1A',
+            color: '#EAEAEA',
+            borderRadius: 14,
+            border: '1px solid #2C2C2C',
+          },
+        }}
+      />
+      <RouteTransitionWrapper>
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<HomePage className="" />} />
+            <Route path="/about" element={<AboutPage className="" />} />
+            <Route path="/services" element={<ServicesPage className="" />} />
+            <Route
+              path="/case-studies"
+              element={<CaseStudiesPage className="" />}
+            />
+            <Route
+              path="/testimonials"
+              element={<TestimonialsPage className="" />}
+            />
+            <Route path="/contact" element={<ContactPage className="" />} />
+          </Routes>
+        </AppLayout>
+      </RouteTransitionWrapper>
+    </HashRouter>
+  );
+}
+
+export default AppShell;

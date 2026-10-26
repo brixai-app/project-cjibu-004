@@ -1,154 +1,232 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import LayoutShell from '@/components/LayoutShell';
-import { testimonials, globalMetrics } from '@/data/mockData';
-import type { Metric, Testimonial } from '@/types';
+import { ArrowRight, Star, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { testimonials } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 
-type KPIItemProps = {
-  metric?: Metric | null;
+export type TestimonialsPageProps = {
+  className?: string;
 };
 
-function KPIItem({ metric = null }: KPIItemProps) {
-  if (!metric) return null;
-  return (
-    <div className="flex flex-col gap-1 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E]/80 px-4 py-3">
-      <div className="text-[11px] uppercase tracking-[0.18em] text-[#B7B7B7]">
-        {metric?.label ?? ''}
-      </div>
-      <div className="flex items-baseline gap-1">
-        <span className="font-mono text-2xl font-semibold text-[#F5F5F5]">
-          {metric?.prefix ?? ''}
-          {metric?.value ?? 0}
-          {metric?.suffix ?? ''}
-        </span>
-      </div>
-      {metric?.description ? (
-        <p className="text-[11px] text-[#8A8A8A]">{metric?.description ?? ''}</p>
-      ) : null}
-    </div>
-  );
-}
-
-type KPIColumnProps = {
-  metrics?: Metric[];
+export type TestimonialsStackProps = {
+  className?: string;
 };
 
-function KPIColumn({ metrics = [] }: KPIColumnProps) {
-  const sliced = metrics?.slice(0, 4) ?? [];
+export function TestimonialsStack({ className = '' }: TestimonialsStackProps) {
+  const avgRating =
+    testimonials?.length ?? 0
+      ? (testimonials?.reduce((acc, t) => acc + (t?.rating ?? 0), 0) ?? 0) /
+        (testimonials?.length ?? 1)
+      : 0;
+
   return (
-    <aside className="flex flex-col gap-3 rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] p-4">
-      <div className="flex items-baseline justify-between">
-        <h2 className="font-serif text-sm font-semibold uppercase tracking-[0.22em] text-[#F5F5F5]">
-          Relationship Health
-        </h2>
-        <span className="font-mono text-[11px] text-[#B7B7B7]">Rolling 36M</span>
-      </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {sliced?.map((m) => (
-          <motion.div
-            key={m?.id ?? ''}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
+    <section
+      className={cn(
+        'relative grid gap-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]',
+        className
+      )}
+    >
+      <div className="space-y-6">
+        {testimonials?.map((t) => (
+          <motion.article
+            key={t?.id}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="group relative overflow-hidden rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A]/80 p-6 backdrop-blur"
           >
-            <KPIItem metric={m} />
-          </motion.div>
-        ))}
-      </div>
-      <div className="mt-2 flex items-center justify-between border-t border-[#2E2E2E] pt-3">
-        <span className="font-mono text-[11px] text-[#8A8A8A]">
-          Counterparty NPS
-        </span>
-        <span className="font-mono text-xs text-[#F5F5F5]">+72</span>
-      </div>
-    </aside>
-  );
-}
-
-type TestimonialCarouselShellProps = {
-  items?: Testimonial[];
-};
-
-function TestimonialCarouselShell({ items = [] }: TestimonialCarouselShellProps) {
-  const hasItems = (items?.length ?? 0) > 0;
-  return (
-    <section className="relative flex h-full flex-col rounded-[14px] border border-[#2E2E2E] bg-[#1E1E1E] p-6">
-      <header className="mb-4 flex items-baseline justify-between gap-4">
-        <div>
-          <h1 className="font-serif text-xl text-[#F5F5F5]">
-            Institutional conviction, in their words.
-          </h1>
-          <p className="mt-1 max-w-xl font-mono text-xs text-[#B7B7B7]">
-            LPs, strategics, and founders describing live execution across cycles.
-          </p>
-        </div>
-        <span className="hidden rounded-full border border-[#2E2E2E] px-3 py-1 font-mono text-[11px] text-[#B7B7B7] sm:inline-flex">
-          {(items?.length ?? 0).toString().padStart(2, '0')} counterparties
-        </span>
-      </header>
-      <div className="relative mt-2 flex-1">
-        <div className="h-full w-full rounded-[12px] border border-dashed border-[#2E2E2E] p-4">
-          {hasItems ? (
-            <div className="h-full w-full">
-              <div className="mb-3 flex items-center gap-3">
-                <div className="h-9 w-9 overflow-hidden rounded-full border border-[#2E2E2E] bg-[#121212]">
-                  <img
-                    crossOrigin="anonymous"
-                    src={
-                      items?.[0]?.avatarUrl ??
-                      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=85'
-                    }
-                    alt={items?.[0]?.name ?? 'Client avatar'}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-mono text-xs text-[#F5F5F5]">
-                    {items?.[0]?.name ?? ''}
-                  </span>
-                  <span className="font-mono text-[11px] text-[#8A8A8A]">
-                    {items?.[0]?.role ?? ''} · {items?.[0]?.company ?? ''}
-                  </span>
+            <div className="flex items-start gap-4">
+              <img
+                src={t?.avatarUrl ?? 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=200&q=80'}
+                crossOrigin="anonymous"
+                alt={t?.name ?? 'Client'}
+                className="h-12 w-12 rounded-full object-cover"
+              />
+              <div className="flex-1 space-y-3">
+                <p className="font-['Lora'] text-sm uppercase tracking-[0.2em] text-[#A6A6A6]">
+                  {t?.relationship ?? 'Client'} • {t?.sector ?? 'Sector'}
+                </p>
+                <p className="font-['Playfair_Display'] text-lg leading-relaxed text-[#EAEAEA]">
+                  “{t?.quote ?? ''}”
+                </p>
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-1 text-xs text-[#A6A6A6]">
+                  <div>
+                    <span className="font-['Lora'] text-sm text-[#EAEAEA]">
+                      {t?.name ?? 'Name'}
+                    </span>
+                    <span className="mx-1">•</span>
+                    <span>{t?.role ?? 'Role'}</span>
+                    <span className="mx-1">at</span>
+                    <span className="text-[#EAEAEA]">
+                      {t?.company ?? 'Company'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={cn(
+                          'h-3.5 w-3.5',
+                          i < (t?.rating ?? 0)
+                            ? 'fill-[#D4AF37] text-[#D4AF37]'
+                            : 'text-[#2C2C2C]'
+                        )}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
-              <p className="mb-3 font-serif text-[15px] leading-relaxed text-[#F5F5F5]">
-                “{items?.[0]?.quote ?? ''}”
-              </p>
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#B7B7B7]">
-                {items?.[0]?.relationship ?? ''}
-              </p>
             </div>
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <span className="font-mono text-xs text-[#8A8A8A]">
-                Testimonial carousel mounted here.
-              </span>
-            </div>
-          )}
-        </div>
+          </motion.article>
+        ))}
       </div>
+      <aside className="flex flex-col gap-6">
+        <motion.div
+          initial={{ opacity: 0, x: 32 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A]/90 p-6"
+        >
+          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#A6A6A6]">
+            SATISFACTION INDEX
+          </p>
+          <div className="mt-4 flex items-end justify-between">
+            <div>
+              <div className="flex items-baseline gap-2">
+                <span className="font-['Playfair_Display'] text-4xl text-[#EAEAEA]">
+                  {avgRating?.toFixed(2) ?? '0.00'}
+                </span>
+                <span className="text-sm text-[#A6A6A6]">/ 5.00</span>
+              </div>
+              <p className="mt-1 text-xs text-[#A6A6A6]">
+                Across {testimonials?.length ?? 0} verified mandates
+              </p>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border border-[#2C2C2C] px-3 py-1.5 text-xs text-[#A6A6A6]">
+              <Users className="h-3.5 w-3.5 text-[#D4AF37]" />
+              <span>Board, Family Office & PE Sponsors</span>
+            </div>
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: 32 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+          className="rounded-[14px] border border-[#2C2C2C] bg-[#121212] p-6"
+        >
+          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#A6A6A6]">
+            WHAT CLIENTS SIGNAL
+          </p>
+          <ul className="mt-3 space-y-2 text-sm text-[#EAEAEA]">
+            <li>• Relentless preparation and scenario modeling</li>
+            <li>• Calm execution under distressed timelines</li>
+            <li>• Sponsor-grade communication to investment committees</li>
+          </ul>
+        </motion.div>
+      </aside>
     </section>
   );
 }
 
-export function Testimonials() {
-  const metrics = globalMetrics ?? [];
+export function TestimonialsPage({ className = '' }: TestimonialsPageProps) {
+  const navigate = useNavigate();
+  const count = testimonials?.length ?? 0;
+
   return (
-    <LayoutShell className="min-h-screen bg-[#121212] text-[#F5F5F5]">
-      <div
-        className={cn(
-          'mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8',
-          'md:px-8 lg:py-10'
-        )}
-      >
-        <div className="grid gap-6 lg:grid-cols-[ minmax(0,2.2fr)_minmax(0,1.4fr) ]">
-          <TestimonialCarouselShell items={testimonials ?? []} />
-          <KPIColumn metrics={metrics} />
+    <main className={cn('min-h-screen bg-[#121212] text-[#EAEAEA]', className)}>
+      <section className="relative border-b border-[#2C2C2C] bg-[#121212] px-6 pb-16 pt-28 md:px-10 lg:px-20">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end"
+          >
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#A6A6A6]">
+                LIVE REFERENCES
+              </p>
+              <h1 className="mt-4 font-['Playfair_Display'] text-4xl leading-tight text-[#EAEAEA] md:text-5xl">
+                Measured trust from principals
+                <span className="block text-[#D4AF37]">
+                  who sign the wire.
+                </span>
+              </h1>
+              <p className="mt-5 max-w-xl font-['Lora'] text-sm text-[#A6A6A6]">
+                A curated selection of board chairs, founders and sponsors who
+                mandated Returnz on complex, reputation-critical transactions.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#A6A6A6]">
+                  AGGREGATE SENTIMENT
+                </p>
+                <div className="mt-3 flex items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-4 w-4 fill-[#D4AF37] text-[#D4AF37]"
+                      />
+                    ))}
+                  </div>
+                  <span className="text-sm text-[#EAEAEA]">
+                    {count} qualitative endorsements
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/contact')}
+                className="inline-flex items-center gap-2 rounded-[14px] bg-[#D4AF37] px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-[#B8921F]"
+              >
+                Request reference call
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </LayoutShell>
+      </section>
+      <section className="px-6 py-16 md:px-10 lg:px-20">
+        <div className="mx-auto max-w-6xl space-y-16">
+          <TestimonialsStack />
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="flex flex-col items-start justify-between gap-6 rounded-[14px] border border-[#2C2C2C] bg-[#1A1A1A] px-6 py-7 md:flex-row md:px-9"
+          >
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#A6A6A6]">
+                NEXT CONVERSATION
+              </p>
+              <h2 className="mt-3 font-['Playfair_Display'] text-2xl text-[#EAEAEA]">
+                Ready for a closed-door, numbers-first discussion.
+              </h2>
+              <p className="mt-2 max-w-xl text-sm text-[#A6A6A6]">
+                Share the contours of your mandate and we will revert with a
+                candid view on fit, timing and achievable outcomes.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/contact')}
+              className="inline-flex items-center gap-2 rounded-[14px] bg-[#D4AF37] px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-[#B8921F]"
+            >
+              Open contact brief
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </motion.div>
+        </div>
+      </section>
+    </main>
   );
 }
 
-export default Testimonials;
+export default TestimonialsPage;

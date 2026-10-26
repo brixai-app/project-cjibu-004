@@ -5,24 +5,24 @@
 :root {
   --color-bg: #121212;
   --color-bg-rgb: 18, 18, 18;
-  --color-surface: #1E1E1E;
-  --color-surface-rgb: 30, 30, 30;
-  --color-surface-hover: #262626;
-  --color-surface-hover-rgb: 38, 38, 38;
-  --color-border: #2E2E2E;
-  --color-border-rgb: 46, 46, 46;
-  --color-text-primary: #F5F5F5;
-  --color-text-primary-rgb: 245, 245, 245;
-  --color-text-muted: #B7B7B7;
-  --color-text-muted-rgb: 183, 183, 183;
-  --color-accent: #0077FF;
-  --color-accent-rgb: 0, 119, 255;
-  --color-accent-hover: #0A5ED6;
-  --color-accent-hover-rgb: 10, 94, 214;
+  --color-surface: #1A1A1A;
+  --color-surface-rgb: 26, 26, 26;
+  --color-surface-hover: #242424;
+  --color-surface-hover-rgb: 36, 36, 36;
+  --color-border: #2C2C2C;
+  --color-border-rgb: 44, 44, 44;
+  --color-text-primary: #EAEAEA;
+  --color-text-primary-rgb: 234, 234, 234;
+  --color-text-muted: #A6A6A6;
+  --color-text-muted-rgb: 166, 166, 166;
+  --color-accent: #D4AF37;
+  --color-accent-rgb: 212, 175, 55;
+  --color-accent-hover: #B8921F;
+  --color-accent-hover-rgb: 184, 146, 31;
   --color-accent-text: #000000;
   --radius-theme: 14px;
-  --font-heading: 'Lora', sans-serif;
-  --font-body: 'JetBrains Mono', sans-serif;
+  --font-heading: 'Playfair Display', sans-serif;
+  --font-body: 'Lora', sans-serif;
 }
 
 @layer base {
